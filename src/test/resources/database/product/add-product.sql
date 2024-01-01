@@ -1,0 +1,1 @@
+INSERT INTO products (item_code) VALUES (100)
