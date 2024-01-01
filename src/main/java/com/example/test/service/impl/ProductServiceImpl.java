@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+    private static final int FIRST = 0;
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional
@@ -28,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<Map<String, String>> records = tableRequestDto.records();
 
-        records.forEach(record -> createTableIfNotExist(record, tableName));
+        createTableIfNotExist(records.get(FIRST), tableName);
 
         tableRequestDto.records().forEach(product -> saveRecord(tableName, product));
     }
