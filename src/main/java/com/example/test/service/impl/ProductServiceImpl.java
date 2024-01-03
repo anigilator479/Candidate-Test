@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private static final int FIRST_RECORD = 0;
+    private static final String STRING_FIELD_TYPE = " VARCHAR(255), ";
+    private static final String COMA = ",";
     private final JdbcTemplate jdbcTemplate;
     private final ProductUtil productUtil;
 
@@ -39,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void createTableIfNotExist(Map<String, String> productMap, String tableName) {
-        StringBuilder fieldNames = productUtil.createQueryKeys(productMap, " VARCHAR(255), ");
+        StringBuilder fieldNames = productUtil.createQueryKeys(productMap, STRING_FIELD_TYPE);
 
         String createTableQuery = String.format(
                 "CREATE TABLE IF NOT EXISTS %s (id BIGINT AUTO_INCREMENT PRIMARY KEY, %s)",
@@ -49,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void saveRecord(String tableName, Map<String, String> product) {
-        StringBuilder keys = productUtil.createQueryKeys(product, ",");
+        StringBuilder keys = productUtil.createQueryKeys(product, COMA);
 
         String values = productUtil.createQueryValues(product);
 

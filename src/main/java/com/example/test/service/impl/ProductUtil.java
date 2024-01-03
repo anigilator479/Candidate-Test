@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductUtil {
+    private static final String COMA = ",";
+    private static final String APOSTROPHE = "'";
+
     public String validateAndSanitizeTableName(String tableName) {
         if (!tableName.matches("^[a-zA-Z0-9_]+$")) {
             throw new IllegalArgumentException(String.format("Invalid table name: %s", tableName));
@@ -18,7 +21,7 @@ public class ProductUtil {
         for (String s : productMap.keySet()) {
             fieldNames.append(s).append(str);
         }
-        fieldNames.deleteCharAt(fieldNames.lastIndexOf(","));
+        fieldNames.deleteCharAt(fieldNames.lastIndexOf(COMA));
         return fieldNames;
     }
 
@@ -26,8 +29,8 @@ public class ProductUtil {
         StringBuilder values = new StringBuilder();
 
         String joinedValues = product.values().stream()
-                .map(s -> "'" + s + "'")
-                .collect(Collectors.joining(","));
+                .map(s -> APOSTROPHE + s + APOSTROPHE)
+                .collect(Collectors.joining(COMA));
 
         values.append(joinedValues);
 
